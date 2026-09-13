@@ -1,0 +1,1211 @@
+{
+  "datasets": [
+    {
+      "name": "subscriber_usage",
+      "displayName": "Subscriber Usage Metrics",
+      "config": {
+        "version": "1.1",
+        "source": "gold_subscriber_usage",
+        "dimensions": [
+          {
+            "name": "subscriber_id",
+            "expr": "subscriber_id",
+            "comment": "Unique subscriber identifier"
+          },
+          {
+            "name": "last_event_time",
+            "expr": "last_event_time",
+            "comment": "Timestamp of most recent activity",
+            "format": {
+              "type": "date_time",
+              "dateFormat": "locale_short_month",
+              "timeFormat": "locale_hour_minute"
+            }
+          }
+        ],
+        "measures": [
+          {
+            "displayName": "Total Calls",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 0.0
+              }
+            },
+            "name": "total_calls",
+            "expr": "SUM(total_calls)",
+            "comment": "Number of voice calls made"
+          },
+          {
+            "displayName": "Total Call Duration (sec)",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 0.0
+              }
+            },
+            "name": "total_call_duration",
+            "expr": "SUM(total_call_duration_sec)",
+            "comment": "Total duration of all calls in seconds"
+          },
+          {
+            "displayName": "Total Data Sessions",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 0.0
+              }
+            },
+            "name": "total_data_sessions",
+            "expr": "SUM(total_data_sessions)",
+            "comment": "Number of data usage sessions"
+          },
+          {
+            "displayName": "Total Data Usage (MB)",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            },
+            "name": "total_data_mb",
+            "expr": "SUM(total_data_mb)",
+            "comment": "Total data consumed in megabytes"
+          },
+          {
+            "displayName": "Total SMS",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 0.0
+              }
+            },
+            "name": "total_sms",
+            "expr": "SUM(total_sms)",
+            "comment": "Number of SMS messages sent"
+          },
+          {
+            "displayName": "Total Events",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 0.0
+              }
+            },
+            "name": "total_events",
+            "expr": "SUM(total_events)",
+            "comment": "Total number of all events"
+          },
+          {
+            "displayName": "Avg Call Duration (sec)",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            },
+            "name": "avg_call_duration",
+            "expr": "SUM(total_call_duration_sec) / NULLIF(SUM(total_calls), 0)",
+            "comment": "Average duration per call"
+          }
+        ]
+      }
+    },
+    {
+      "name": "event_details",
+      "displayName": "Event Details",
+      "config": {
+        "version": "1.1",
+        "source": "telecom_silver",
+        "dimensions": [
+          {
+            "name": "event_id",
+            "expr": "event_id",
+            "comment": "Unique event identifier"
+          },
+          {
+            "name": "subscriber_id",
+            "expr": "subscriber_id",
+            "comment": "Subscriber identifier"
+          },
+          {
+            "name": "event_type",
+            "expr": "event_type",
+            "comment": "Type of event - CALL, DATA, or SMS"
+          },
+          {
+            "name": "cell_tower_id",
+            "expr": "cell_tower_id",
+            "comment": "Cell tower handling the event"
+          },
+          {
+            "name": "event_timestamp",
+            "expr": "event_timestamp",
+            "comment": "When the event occurred",
+            "format": {
+              "type": "date_time",
+              "dateFormat": "locale_short_month",
+              "timeFormat": "locale_hour_minute"
+            }
+          },
+          {
+            "displayName": "Event Date",
+            "format": {
+              "type": "date",
+              "dateFormat": "locale_short_month"
+            },
+            "name": "event_date",
+            "expr": "DATE(event_timestamp)",
+            "comment": "Date of event"
+          },
+          {
+            "name": "event_hour",
+            "expr": "HOUR(event_timestamp)",
+            "displayName": "Event Hour",
+            "comment": "Hour of day when event occurred"
+          }
+        ],
+        "measures": [
+          {
+            "displayName": "Call Duration (sec)",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 0.0
+              }
+            },
+            "name": "call_duration",
+            "expr": "SUM(call_duration_sec)",
+            "comment": "Total call duration in seconds"
+          },
+          {
+            "displayName": "Data Usage (MB)",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            },
+            "name": "data_usage",
+            "expr": "SUM(data_used_mb)",
+            "comment": "Total data consumed in megabytes"
+          },
+          {
+            "displayName": "SMS Count",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 0.0
+              }
+            },
+            "name": "sms_count",
+            "expr": "SUM(sms_count)",
+            "comment": "Number of SMS messages"
+          },
+          {
+            "displayName": "Event Count",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 0.0
+              }
+            },
+            "name": "event_count",
+            "expr": "COUNT(*)",
+            "comment": "Total number of events"
+          }
+        ]
+      }
+    },
+    {
+      "name": "tower_load",
+      "displayName": "Tower Load Metrics",
+      "config": {
+        "version": "1.1",
+        "source": "gold_tower_load",
+        "dimensions": [
+          {
+            "name": "cell_tower_id",
+            "expr": "cell_tower_id",
+            "comment": "Cell tower identifier"
+          }
+        ],
+        "measures": [
+          {
+            "displayName": "Total Events",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 0.0
+              }
+            },
+            "name": "event_count",
+            "expr": "SUM(event_count)",
+            "comment": "Total events handled by tower"
+          },
+          {
+            "displayName": "Data Traffic (MB)",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            },
+            "name": "total_data_mb",
+            "expr": "SUM(total_data_mb)",
+            "comment": "Total data traffic through tower"
+          },
+          {
+            "displayName": "Call Duration (sec)",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 0.0
+              }
+            },
+            "name": "total_call_duration",
+            "expr": "SUM(total_call_duration_sec)",
+            "comment": "Total call duration on tower"
+          }
+        ]
+      }
+    },
+    {
+      "name": "top10_data_subscribers",
+      "displayName": "Top 10 Subscribers by Data",
+      "config": {
+        "version": "1.1",
+        "source": "SELECT subscriber_id, total_data_mb, total_calls, total_call_duration_sec, total_sms, total_events FROM gold_subscriber_usage ORDER BY total_data_mb DESC LIMIT 10\n",
+        "dimensions": [
+          {
+            "name": "subscriber_id",
+            "expr": "subscriber_id",
+            "comment": "Unique subscriber identifier"
+          }
+        ],
+        "measures": [
+          {
+            "displayName": "Total Data Usage (MB)",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            },
+            "name": "total_data_mb",
+            "expr": "SUM(total_data_mb)",
+            "comment": "Total data consumed in megabytes"
+          }
+        ]
+      }
+    },
+    {
+      "name": "top10_call_subscribers",
+      "displayName": "Top 10 Subscribers by Call Duration",
+      "config": {
+        "version": "1.1",
+        "source": "SELECT subscriber_id, total_data_mb, total_calls, total_call_duration_sec, total_sms, total_events FROM gold_subscriber_usage ORDER BY total_call_duration_sec DESC LIMIT 10\n",
+        "dimensions": [
+          {
+            "name": "subscriber_id",
+            "expr": "subscriber_id",
+            "comment": "Unique subscriber identifier"
+          }
+        ],
+        "measures": [
+          {
+            "displayName": "Total Call Duration (sec)",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 0.0
+              }
+            },
+            "name": "total_call_duration",
+            "expr": "SUM(total_call_duration_sec)",
+            "comment": "Total duration of all calls in seconds"
+          }
+        ]
+      }
+    }
+  ],
+  "pages": [
+    {
+      "name": "c06c0f10",
+      "displayName": "Page 1",
+      "layout": [
+        {
+          "widget": {
+            "name": "total_subscribers",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "subscriber_usage",
+                  "fields": [
+                    {
+                      "name": "count(subscriber_id)",
+                      "expression": "COUNT(`subscriber_id`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Total Subscribers"
+              },
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "count(subscriber_id)",
+                  "rowNumber": 0
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 3,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "total_data_usage",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "subscriber_usage",
+                  "fields": [
+                    {
+                      "name": "measure(total_data_mb)",
+                      "expression": "MEASURE(`total_data_mb`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Total Data Usage (MB)",
+                  "fields": []
+                }
+              },
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "measure(total_data_mb)",
+                  "rowNumber": 0
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 0,
+            "width": 3,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "total_calls",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "subscriber_usage",
+                  "fields": [
+                    {
+                      "name": "measure(total_calls)",
+                      "expression": "MEASURE(`total_calls`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Total Calls"
+              },
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "measure(total_calls)",
+                  "rowNumber": 0
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 0,
+            "width": 3,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "total_sms",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "subscriber_usage",
+                  "fields": [
+                    {
+                      "name": "measure(total_sms)",
+                      "expression": "MEASURE(`total_sms`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Total SMS"
+              },
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "measure(total_sms)",
+                  "rowNumber": 0
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 9,
+            "y": 0,
+            "width": 3,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "data_trend",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "event_details",
+                  "fields": [
+                    {
+                      "name": "event_date",
+                      "expression": "`event_date`"
+                    },
+                    {
+                      "name": "measure(data_usage)",
+                      "expression": "MEASURE(`data_usage`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Data Usage Over Time"
+              },
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "event_date",
+                  "displayName": "event_date",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(data_usage)",
+                  "displayName": "data_usage",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "event_date",
+                  "displayName": "event_date",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 4,
+            "width": 6,
+            "height": 8
+          }
+        },
+        {
+          "widget": {
+            "name": "call_trend",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "event_details",
+                  "fields": [
+                    {
+                      "name": "event_date",
+                      "expression": "`event_date`"
+                    },
+                    {
+                      "name": "measure(call_duration)",
+                      "expression": "MEASURE(`call_duration`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Call Volume Over Time"
+              },
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "event_date",
+                  "displayName": "event_date",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(call_duration)",
+                  "displayName": "call_duration",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "event_date",
+                  "displayName": "event_date",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 4,
+            "width": 6,
+            "height": 8
+          }
+        },
+        {
+          "widget": {
+            "name": "top_data_users",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "top10_data_subscribers",
+                  "fields": [
+                    {
+                      "name": "measure(total_data_mb)",
+                      "expression": "MEASURE(`total_data_mb`)"
+                    },
+                    {
+                      "name": "subscriber_id",
+                      "expression": "`subscriber_id`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Top 10 Subscribers by Data Usage",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "measure(total_data_mb)",
+                  "displayName": "Total Data (MB)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "subscriber_id",
+                  "displayName": "Subscriber ID",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 12,
+            "width": 6,
+            "height": 8
+          }
+        },
+        {
+          "widget": {
+            "name": "top_callers",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "top10_call_subscribers",
+                  "fields": [
+                    {
+                      "name": "measure(total_call_duration)",
+                      "expression": "MEASURE(`total_call_duration`)"
+                    },
+                    {
+                      "name": "subscriber_id",
+                      "expression": "`subscriber_id`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Top 10 Subscribers by Call Duration",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "measure(total_call_duration)",
+                  "displayName": "Call Duration (sec)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "subscriber_id",
+                  "displayName": "Subscriber ID",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 12,
+            "width": 6,
+            "height": 8
+          }
+        },
+        {
+          "widget": {
+            "name": "tower_load",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "tower_load",
+                  "fields": [
+                    {
+                      "name": "cell_tower_id",
+                      "expression": "`cell_tower_id`"
+                    },
+                    {
+                      "name": "measure(event_count)",
+                      "expression": "MEASURE(`event_count`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Network Load by Tower",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "cell_tower_id",
+                  "displayName": "Cell Tower",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(event_count)",
+                  "displayName": "Event Count",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 20,
+            "width": 6,
+            "height": 8
+          }
+        },
+        {
+          "widget": {
+            "name": "hourly_usage",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "event_details",
+                  "fields": [
+                    {
+                      "name": "event_hour",
+                      "expression": "`event_hour`"
+                    },
+                    {
+                      "name": "measure(event_count)",
+                      "expression": "MEASURE(`event_count`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Usage Patterns by Hour of Day"
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "event_hour",
+                  "displayName": "event_hour",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(event_count)",
+                  "displayName": "event_count",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "event_hour",
+                  "displayName": "event_hour",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 28,
+            "width": 6,
+            "height": 8
+          }
+        },
+        {
+          "widget": {
+            "name": "subscriber_details",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "subscriber_usage",
+                  "fields": [
+                    {
+                      "name": "subscriber_id",
+                      "expression": "`subscriber_id`"
+                    },
+                    {
+                      "name": "measure(total_calls)",
+                      "expression": "MEASURE(`total_calls`)"
+                    },
+                    {
+                      "name": "measure(total_call_duration)",
+                      "expression": "MEASURE(`total_call_duration`)"
+                    },
+                    {
+                      "name": "measure(total_data_mb)",
+                      "expression": "MEASURE(`total_data_mb`)"
+                    },
+                    {
+                      "name": "measure(total_sms)",
+                      "expression": "MEASURE(`total_sms`)"
+                    },
+                    {
+                      "name": "measure(total_events)",
+                      "expression": "MEASURE(`total_events`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Subscriber Usage Details"
+              },
+              "version": 2,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "subscriber_id"
+                  },
+                  {
+                    "fieldName": "measure(total_calls)"
+                  },
+                  {
+                    "fieldName": "measure(total_call_duration)"
+                  },
+                  {
+                    "fieldName": "measure(total_data_mb)"
+                  },
+                  {
+                    "fieldName": "measure(total_sms)"
+                  },
+                  {
+                    "fieldName": "measure(total_events)"
+                  }
+                ]
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 28,
+            "width": 6,
+            "height": 8
+          }
+        },
+        {
+          "widget": {
+            "name": "overview_header",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## Telecom Usage Monitoring Dashboard\n",
+                "\n",
+                "Real-time telecommunications monitoring dashboard tracking subscriber usage patterns, network performance, and call statistics. Data is sourced from live event streams processed through a bronze-silver-gold data pipeline.\n",
+                "\n",
+                "**Key Metrics:** Total subscribers, data consumption, call volume, SMS activity, and network tower performance."
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 36,
+            "width": 12,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "avg_call_duration",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "subscriber_usage",
+                  "fields": [
+                    {
+                      "name": "measure(avg_call_duration)",
+                      "expression": "MEASURE(`avg_call_duration`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Avg Call Duration"
+              },
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "measure(avg_call_duration)",
+                  "rowNumber": 0
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 20,
+            "width": 3,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "total_events",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "subscriber_usage",
+                  "fields": [
+                    {
+                      "name": "measure(total_events)",
+                      "expression": "MEASURE(`total_events`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Total Events"
+              },
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "measure(total_events)",
+                  "rowNumber": 0
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 9,
+            "y": 20,
+            "width": 3,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "tower_data_traffic",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "tower_load",
+                  "fields": [
+                    {
+                      "name": "cell_tower_id",
+                      "expression": "`cell_tower_id`"
+                    },
+                    {
+                      "name": "measure(total_data_mb)",
+                      "expression": "MEASURE(`total_data_mb`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Data Traffic by Tower",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "cell_tower_id",
+                  "displayName": "Cell Tower",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(total_data_mb)",
+                  "displayName": "Data Traffic (MB)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 40,
+            "width": 6,
+            "height": 8
+          }
+        },
+        {
+          "widget": {
+            "name": "event_distribution_pie",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "event_details",
+                  "fields": [
+                    {
+                      "name": "measure(event_count)",
+                      "expression": "MEASURE(`event_count`)"
+                    },
+                    {
+                      "name": "event_type",
+                      "expression": "`event_type`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Event Distribution by Type"
+              },
+              "version": 3,
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "measure(event_count)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "event_type",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 40,
+            "width": 6,
+            "height": 8
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}
